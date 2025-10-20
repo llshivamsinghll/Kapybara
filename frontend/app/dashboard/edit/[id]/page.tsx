@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LoadingSpinner } from '@/components/ui/loading';
-import { generateSlug } from '@/lib/utils';
+import type { Post, Category } from '@/types/trpc';
 
 export default function EditPostPage() {
   const params = useParams();
@@ -27,7 +27,7 @@ export default function EditPostPage() {
   const { data: post, isLoading: postLoading } = trpc.posts.getAll.useQuery({});
   const { data: categories } = trpc.categories.getAll.useQuery();
 
-  const currentPost = post?.find((p: any) => p.id === postId);
+  const currentPost = post?.find((p: Post) => p.id === postId);
 
   const updateMutation = trpc.posts.update.useMutation({
     onSuccess: () => {
@@ -47,7 +47,7 @@ export default function EditPostPage() {
       setExcerpt(currentPost.excerpt || '');
       setContent(currentPost.content);
       setPublished(currentPost.published);
-      setSelectedCategories(currentPost.categories?.map((c: any) => c.id) || []);
+      setSelectedCategories(currentPost.categories?.map((c: Category) => c.id) || []);
       setInitialized(true);
     }
   }, [currentPost, initialized]);
@@ -92,7 +92,7 @@ export default function EditPostPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-red-950/50 border border-red-800 rounded-lg p-8 text-center">
           <h2 className="text-2xl font-semibold text-red-300 mb-2">Post Not Found</h2>
-          <p className="text-red-400 mb-6">The post you're trying to edit doesn't exist.</p>
+          <p className="text-red-400 mb-6">The post you&apos;re trying to edit doesn&apos;t exist.</p>
           <Button onClick={() => router.push('/dashboard')}>Back to Dashboard</Button>
         </div>
       </div>
@@ -165,7 +165,7 @@ export default function EditPostPage() {
           <CardContent>
             {categories && categories.length > 0 ? (
               <div className="flex flex-wrap gap-2">
-                {categories.map((category: any) => (
+                {categories.map((category: Category) => (
                   <button
                     key={category.id}
                     type="button"

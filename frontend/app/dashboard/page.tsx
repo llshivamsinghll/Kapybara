@@ -2,15 +2,14 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { trpc } from '@/lib/trpc';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { LoadingSpinner, PostListSkeleton } from '@/components/ui/loading';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PostListSkeleton } from '@/components/ui/loading';
 import { formatDate } from '@/lib/utils';
+import type { Post, Category } from '@/types/trpc';
 
 export default function DashboardPage() {
-  const router = useRouter();
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const utils = trpc.useUtils();
@@ -34,8 +33,8 @@ export default function DashboardPage() {
     }
   };
 
-  const publishedPosts = posts?.filter((p: any) => p.published) || [];
-  const draftPosts = posts?.filter((p: any) => !p.published) || [];
+  const publishedPosts = posts?.filter((p: Post) => p.published) || [];
+  const draftPosts = posts?.filter((p: Post) => !p.published) || [];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -99,7 +98,7 @@ export default function DashboardPage() {
             <section>
               <h2 className="text-2xl font-bold text-white mb-4">Published Posts</h2>
               <div className="space-y-4">
-                {publishedPosts.map((post: any) => (
+                {publishedPosts.map((post: Post) => (
                   <Card key={post.id} className="hover:shadow-md transition-shadow">
                     <CardHeader>
                       <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -109,7 +108,7 @@ export default function DashboardPage() {
                             Published on {formatDate(post.createdAt)}
                             {post.categories && post.categories.length > 0 && (
                               <span className="ml-3">
-                                {post.categories.map((cat: any) => (
+                                {post.categories.map((cat: Category) => (
                                   <span key={cat.id} className="inline-block ml-1 px-2 py-0.5 bg-indigo-950 text-indigo-300 border border-indigo-800 text-xs rounded">
                                     {cat.name}
                                   </span>
@@ -153,7 +152,7 @@ export default function DashboardPage() {
             <section>
               <h2 className="text-2xl font-bold text-white mb-4">Drafts</h2>
               <div className="space-y-4">
-                {draftPosts.map((post: any) => (
+                {draftPosts.map((post: Post) => (
                   <Card key={post.id} className="hover:shadow-md transition-shadow border-dashed">
                     <CardHeader>
                       <div className="flex flex-col sm:flex-row justify-between gap-4">

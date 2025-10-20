@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { trpc } from '@/lib/trpc';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select } from '@/components/ui/select';
-import { LoadingSpinner, PostListSkeleton } from '@/components/ui/loading';
+import { PostListSkeleton } from '@/components/ui/loading';
 import { formatDate, calculateReadingTime } from '@/lib/utils';
+import type { Post, Category } from '@/types/trpc';
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -15,9 +16,9 @@ export default function BlogPage() {
   
   const { data: posts, isLoading: postsLoading, error } = trpc.posts.getPublished.useQuery();
 
-  const filteredPosts = posts?.filter((post: any) => {
+  const filteredPosts = posts?.filter((post: Post) => {
     if (selectedCategory === 'all') return true;
-    return post.categories.some((cat: any) => cat.id.toString() === selectedCategory);
+    return post.categories.some((cat: Category) => cat.id.toString() === selectedCategory);
   });
 
   if (error) {
@@ -53,7 +54,7 @@ export default function BlogPage() {
               onChange={(e) => setSelectedCategory(e.target.value)}
               options={[
                 { value: 'all', label: 'All Categories' },
-                ...(categories?.map((cat: any) => ({
+                ...(categories?.map((cat: Category) => ({
                   value: cat.id.toString(),
                   label: cat.name,
                 })) || []),
@@ -72,7 +73,7 @@ export default function BlogPage() {
         <PostListSkeleton />
       ) : filteredPosts && filteredPosts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPosts.map((post: any) => (
+          {filteredPosts.map((post: Post) => (
             <Link key={post.id} href={`/blog/${post.slug}`}>
               <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
                 <CardHeader>
@@ -87,7 +88,7 @@ export default function BlogPage() {
                   )}
                   {post.categories.length > 0 && (
                     <div className="flex flex-wrap gap-2">
-                      {post.categories.map((category: any) => (
+                      {post.categories.map((category: Category) => (
                         <span
                           key={category.id}
                           className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-950 text-indigo-300 border border-indigo-800"

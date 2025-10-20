@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LoadingSpinner } from '@/components/ui/loading';
 import { generateSlug } from '@/lib/utils';
+import type { Category } from '@/types/trpc';
 
 export default function CategoriesPage() {
   const router = useRouter();
@@ -61,7 +62,7 @@ export default function CategoriesPage() {
     setShowForm(false);
   };
 
-  const handleEdit = (category: any) => {
+  const handleEdit = (category: Category) => {
     setEditingId(category.id);
     setName(category.name);
     setDescription(category.description || '');
@@ -208,7 +209,7 @@ export default function CategoriesPage() {
         </div>
       ) : categories && categories.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {categories.map((category: any) => (
+          {categories.map((category: Category) => (
             <Card key={category.id} className="hover:shadow-md transition-shadow">
               <CardHeader>
                 <div className="flex justify-between items-start">

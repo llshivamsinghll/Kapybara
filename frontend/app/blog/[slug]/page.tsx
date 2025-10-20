@@ -8,8 +8,8 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { trpc } from '@/lib/trpc';
 import { Button } from '@/components/ui/button';
-import { LoadingSpinner } from '@/components/ui/loading';
 import { formatDate, calculateReadingTime, getWordCount } from '@/lib/utils';
+import type { Category } from '@/types/trpc';
 
 export default function BlogPostPage() {
   const params = useParams();
@@ -39,7 +39,9 @@ export default function BlogPostPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-red-950/50 border border-red-800 rounded-lg p-8 text-center">
           <h2 className="text-2xl font-semibold text-red-300 mb-2">Post Not Found</h2>
-          <p className="text-red-400 mb-6">{error?.message || 'The post you\'re looking for doesn\'t exist.'}</p>
+          <p className="text-red-400 mb-6">
+            {error?.message || 'The post you are looking for does not exist.'}
+          </p>
           <Link href="/blog">
             <Button>Back to Blog</Button>
           </Link>
@@ -83,7 +85,7 @@ export default function BlogPostPage() {
         {/* Categories */}
         {post.categories && post.categories.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-6">
-            {post.categories.map((category: any) => (
+            {post.categories.map((category: Category) => (
               <Link
                 key={category.id}
                 href={`/blog?category=${category.id}`}
@@ -111,7 +113,8 @@ export default function BlogPostPage() {
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
-            code({ node, inline, className, children, ...props }: any) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            code({ inline, className, children, ...props }: any) {
               const match = /language-(\w+)/.exec(className || '');
               return !inline && match ? (
                 <SyntaxHighlighter

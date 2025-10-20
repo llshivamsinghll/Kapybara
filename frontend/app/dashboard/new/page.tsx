@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { generateSlug } from '@/lib/utils';
+import type { Category } from '@/types/trpc';
 
 export default function NewPostPage() {
   const router = useRouter();
@@ -17,14 +18,13 @@ export default function NewPostPage() {
   const [slug, setSlug] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
-  const [published, setPublished] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [autoGenerateSlug, setAutoGenerateSlug] = useState(true);
 
   const { data: categories } = trpc.categories.getAll.useQuery();
 
   const createMutation = trpc.posts.create.useMutation({
-    onSuccess: (data) => {
+    onSuccess: () => {
       utils.posts.getAll.invalidate();
       router.push('/dashboard');
     },
@@ -147,7 +147,7 @@ export default function NewPostPage() {
           <CardContent>
             {categories && categories.length > 0 ? (
               <div className="flex flex-wrap gap-2">
-                {categories.map((category: any) => (
+                {categories.map((category: Category) => (
                   <button
                     key={category.id}
                     type="button"
@@ -219,7 +219,7 @@ const code = 'example';
             type="button"
             variant="secondary"
             onClick={(e) => handleSubmit(e, false)}
-            isLoading={createMutation.isPending && !published}
+            isLoading={createMutation.isPending}
             disabled={createMutation.isPending}
           >
             Save as Draft
@@ -227,7 +227,7 @@ const code = 'example';
           <Button
             type="submit"
             onClick={(e) => handleSubmit(e, true)}
-            isLoading={createMutation.isPending && published}
+            isLoading={createMutation.isPending}
             disabled={createMutation.isPending}
           >
             Publish Post
