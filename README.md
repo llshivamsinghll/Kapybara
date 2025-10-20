@@ -1,1046 +1,362 @@
-# 📝 Full-Stack Blogging Platform<div align="center"><div align="center"># Full-Stack Blogging Platform - Assessment Project# Multi-User Blogging Platform# Kapybara Blog - Full-Stack Blogging Platform
+﻿# Full-Stack Blogging Platform
 
+Assessment project: a modern multi-user blogging platform demonstrating production-quality code with end-to-end type safety, clean architecture, and modern React patterns.
 
-
-**Assessment Project** - A modern multi-user blogging platform demonstrating production-quality code with end-to-end type safety, clean architecture, and modern React patterns.
-
-
-
-![Next.js](https://img.shields.io/badge/Next.js_15-000000?style=for-the-badge&logo=next.js&logoColor=white)# 📝 Full-Stack Blogging Platform
-
+![Next.js](https://img.shields.io/badge/Next.js_15-000000?style=for-the-badge&logo=next.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-
 ![tRPC](https://img.shields.io/badge/tRPC-2596BE?style=for-the-badge&logo=trpc&logoColor=white)
-
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)### Assessment Project# 📝 Full-Stack Blogging Platform
-
-
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
 ---
 
-
-
-## 🚀 Quick Start*A modern multi-user blogging platform demonstrating production-quality code with end-to-end type safety, clean architecture, and modern React patterns.*
-
-
+## Quick Start
 
 ### Prerequisites
-
 - Node.js 18+
-
-- PostgreSQL database (Neon cloud recommended)---### Assessment ProjectA modern multi-user blogging platform built as a full-stack developer assessment, demonstrating production-quality code with end-to-end type safety, clean architecture, and modern React patterns.
-
+- PostgreSQL database (Neon cloud recommended)
 - npm or yarn
 
+### Installation and setup
 
-
-### Installation & Setup
-
-**Tech Stack**
-
-**1. Clone Repository**
-
+1) Clone repository
 ```bash
-
 git clone <repository-url>
-
-cd FullKapybara![Next.js](https://img.shields.io/badge/Next.js_15-000000?style=for-the-badge&logo=next.js&logoColor=white)*A modern multi-user blogging platform demonstrating production-quality code with end-to-end type safety, clean architecture, and modern React patterns.*
-
+cd FullKapybara
 ```
 
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-
-**2. Backend Setup**
-
-```bash![tRPC](https://img.shields.io/badge/tRPC-2596BE?style=for-the-badge&logo=trpc&logoColor=white)
-
+2) Backend setup
+```bash
 cd kapybara
-
-npm install![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-
+npm install
 ```
-
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)---**Tech Stack:** Next.js 15, tRPC, PostgreSQL, Drizzle ORM, TypeScript, Tailwind CSSA modern, full-stack blogging platform built with Next.js 15, tRPC, PostgreSQL, and Drizzle ORM. This project demonstrates production-quality code with end-to-end type safety, clean architecture, and modern React patterns.A modern, full-stack blogging platform built with Next.js 15, tRPC, PostgreSQL, and Drizzle ORM. This project demonstrates production-quality code with end-to-end type safety, clean architecture, and modern React patterns.
 
 Create `.env` file:
-
 ```env
-
 DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require"
-
-PORT=4000---
-
+PORT=4000
 FRONTEND_URL=http://localhost:3000
-
 ```
 
-
-
-Initialize database:</div>**Tech Stack**
-
+Initialize database:
 ```bash
-
 npm run db:push
-
 npm run db:seed
+```
 
-```## 🚀 Quick Start
-
-
-
-**3. Frontend Setup**
-
+3) Frontend setup
 ```bash
-
-cd ../frontend### 📋 Prerequisites![Next.js](https://img.shields.io/badge/Next.js_15-000000?style=for-the-badge&logo=next.js&logoColor=white)---
-
+cd ../frontend
 npm install
-
 ```
 
-
-
-Create `.env.local` file:```![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-
+Create `.env.local` file:
 ```env
-
-NEXT_PUBLIC_API_URL=http://localhost:4000✓ Node.js 18+
-
+NEXT_PUBLIC_API_URL=http://localhost:4000
 ```
 
-✓ PostgreSQL database (Neon cloud recommended)![tRPC](https://img.shields.io/badge/tRPC-2596BE?style=for-the-badge&logo=trpc&logoColor=white)
+4) Run application
 
-**4. Run Application**
-
-✓ npm or yarn
-
-Terminal 1 - Backend:
-
-```bash```![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-
-cd kapybara
-
-npm run dev
-
-# Backend: http://localhost:4000
-
-```### 📦 Installation![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)## Quick Start## 🚀 Quick Start## 🚀 Features Implemented
-
-
-
-Terminal 2 - Frontend:
-
+Terminal 1 — backend:
 ```bash
-
-cd frontend#### **Step 1: Clone the repository**
-
+cd kapybara
 npm run dev
-
-# Frontend: http://localhost:3000```bash
-
+# Backend at http://localhost:4000
 ```
 
-git clone <repository-url>---
+Terminal 2 — frontend:
+```bash
+cd frontend
+npm run dev
+# Frontend at http://localhost:3000
+```
 
 ---
 
-cd FullKapybara
+## Available commands
 
-## 📋 Available Commands
-
-```
-
-### Backend Commands (`kapybara/`)
-
-
+### Backend commands (kapybara/)
 
 | Command | Description |
-
-|---------|-------------|#### **Step 2: Backend Setup**</div>### Prerequisites
-
+|---------|-------------|
 | `npm run dev` | Start development server with hot reload |
-
-| `npm run build` | Compile TypeScript to JavaScript |```bash
-
+| `npm run build` | Compile TypeScript to JavaScript |
 | `npm start` | Run production build |
-
-| `npm run db:push` | Push database schema to PostgreSQL |cd kapybara
-
+| `npm run db:push` | Push database schema to PostgreSQL |
 | `npm run db:studio` | Open Drizzle Studio (database GUI) |
-
-| `npm run db:seed` | Seed database with sample data |npm install
-
+| `npm run db:seed` | Seed database with sample data |
 | `npm run db:clean` | Drop all database tables |
 
-```## 🚀 Quick Start- Node.js 18+
-
-### Frontend Commands (`frontend/`)
-
-
+### Frontend commands (frontend/)
 
 | Command | Description |
-
-|---------|-------------|Create `.env` file in `kapybara/`:
-
+|---------|-------------|
 | `npm run dev` | Start Next.js development server |
-
-| `npm run build` | Build for production |```env
-
+| `npm run build` | Build for production |
 | `npm start` | Run production build |
+| `npm run lint` | Run ESLint |
 
-| `npm run lint` | Run ESLint |DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require"### 📋 Prerequisites- PostgreSQL database (local or cloud hosting like Neon)### Prerequisites### ✅ Priority 1 - Core Requirements (Must Have)
+---
 
+## Application routes
 
+### Frontend routes
 
----PORT=4000
-
-
-
-## 🗺️ Application RoutesFRONTEND_URL=http://localhost:3000
-
-
-
-### Frontend Routes```
-
-
-
-**Public Pages:**```- npm or yarn
-
+Public pages:
 - `/` - Landing page with hero and features
-
-- `/blog` - Blog listing with category filteringInitialize database:
-
+- `/blog` - Blog listing with category filtering
 - `/blog/[slug]` - Individual post with markdown rendering
 
-```bash✓ Node.js 18+
-
-**Dashboard (Management):**
-
-- `/dashboard` - View all posts (published & drafts)npm run db:push
-
+Dashboard (management):
+- `/dashboard` - View all posts (published and drafts)
 - `/dashboard/new` - Create new blog post
-
-- `/dashboard/edit/[id]` - Edit existing postnpm run db:seed✓ PostgreSQL database (local or cloud hosting like Neon)- [x] **Blog post CRUD operations** - Create, read, update, and delete posts
-
+- `/dashboard/edit/[id]` - Edit existing post
 - `/dashboard/categories` - Manage categories (CRUD)
 
-```
+### Backend API routes (tRPC)
 
-### Backend API Routes (tRPC)
+Base URL: `http://localhost:4000/trpc`
 
-✓ npm or yarn
-
-**Base URL:** `http://localhost:4000/trpc`
-
-#### **Step 3: Frontend Setup**
-
-**Posts Router (`posts.*`):**
-
-| Endpoint | Type | Input | Output |```bash```### Installation
-
-|----------|------|-------|--------|
-
-| `posts.getAll` | Query | `{ published?: boolean }` | Post array |cd ../frontend
-
-| `posts.getPublished` | Query | - | Post array |
-
-| `posts.getBySlug` | Query | `{ slug: string }` | Post + categories |npm install
-
-| `posts.create` | Mutation | Post data + category IDs | Created post |
-
-| `posts.update` | Mutation | Post ID + data | Updated post |```
-
-| `posts.delete` | Mutation | `{ id: number }` | Success message |
-
-| `posts.generateSlug` | Query | `{ text: string }` | Unique slug |### 📦 Installation- Node.js 18+ - [x] **Category CRUD operations** - Full category management system
-
-
-
-**Categories Router (`categories.*`):**Create `.env.local` file in `frontend/`:
-
+Posts router (`posts.*`):
 | Endpoint | Type | Input | Output |
+|----------|------|-------|--------|
+| `posts.getAll` | Query | `{ published?: boolean; categoryId?: number; limit?: number; offset?: number }` | Post array |
+| `posts.getPublished` | Query | `-` | Post array (published only) |
+| `posts.getBySlug` | Query | `{ slug: string }` | Post with categories |
+| `posts.create` | Mutation | `{ title: string; content: string; excerpt?: string; slug: string; published?: boolean; categoryIds?: number[] }` | Created post |
+| `posts.update` | Mutation | `{ id: number; title?: string; content?: string; excerpt?: string; slug?: string; published?: boolean; categoryIds?: number[] }` | Updated post |
+| `posts.delete` | Mutation | `{ id: number }` | `{ success: true }` |
+| `posts.generateSlug` | Query | `{ title: string }` | Unique slug string |
 
-|----------|------|-------|--------|```env
-
-| `categories.getAll` | Query | - | Category array |
-
-| `categories.getBySlug` | Query | `{ slug: string }` | Single category |NEXT_PUBLIC_API_URL=http://localhost:4000
-
-| `categories.create` | Mutation | Category data | Created category |
-
-| `categories.update` | Mutation | ID + data | Updated category |```#### **Step 1: Clone the repository****1. Clone the repository**
-
-| `categories.delete` | Mutation | `{ id: number }` | Success message |
-
-| `categories.generateSlug` | Query | `{ text: string }` | Unique slug |
-
-
-
----### ▶️ Running the Application```bash
-
-
-
-## ✅ Assessment Features Implemented
-
-
-
-### Priority 1: Core Requirements (100%)<table>git clone <repository-url>```bash- PostgreSQL database (local or cloud)- [x] **Assign categories to posts** - Many-to-many relationship support
-
-- ✅ Blog Post CRUD operations
-
-- ✅ Category CRUD operations<tr>
-
-- ✅ Many-to-Many relationship (posts + categories)
-
-- ✅ Blog listing page with filtering<td width="50%">cd FullKapybara
-
-- ✅ Individual post view page
-
-- ✅ Category filtering
-
-- ✅ Responsive navigation
-
-- ✅ Professional UI with dark theme**🔧 Terminal 1: Backend**```git clone <repository-url>
-
-
-
-### Priority 2: Expected Features (100%)
-
-- ✅ Landing page (Hero + Features + Footer)
-
-- ✅ Dashboard for post management```bash
-
-- ✅ Draft vs Published status
-
-- ✅ Loading states (skeleton loaders)cd kapybara
-
-- ✅ Error handling with user-friendly messages
-
-- ✅ Mobile-responsive designnpm run dev#### **Step 2: Backend Setup**cd FullKapybara- npm or yarn- [x] **Blog listing page** - Display all published posts with filtering
-
-- ✅ Markdown editor
-
-```
-
-### Priority 3: Bonus Features (Partial)
-
-- ✅ Post statistics (word count, reading time)```bash
-
-- ✅ Syntax highlighting for code blocks
-
-- ✅ SEO-friendly slugs with auto-generation🌐 **Backend:** `http://localhost:4000`
-
-- ✅ Full dark mode theme
-
-cd kapybara```
+Categories router (`categories.*`):
+| Endpoint | Type | Input | Output |
+|----------|------|-------|--------|
+| `categories.getAll` | Query | `-` | Category array |
+| `categories.getBySlug` | Query | `{ slug: string }` | Single category |
+| `categories.create` | Mutation | `{ name: string; description?: string; slug: string }` | Created category |
+| `categories.update` | Mutation | `{ id: number; name?: string; description?: string; slug?: string }` | Updated category |
+| `categories.delete` | Mutation | `{ id: number }` | `{ success: true }` |
+| `categories.generateSlug` | Query | `{ name: string }` | Unique slug string |
 
 ---
 
-</td>
+## Assessment features implemented
 
-## 🧰 Technology Stack
+### Priority 1: Core requirements (100%)
+- Blog post CRUD operations
+- Category CRUD operations
+- Many-to-many relationship (posts and categories)
+- Blog listing page with filtering
+- Individual post view page
+- Category filtering
+- Responsive navigation
+- Professional UI with dark theme
 
-<td width="50%">npm install
+### Priority 2: Expected features (100%)
+- Landing page (hero, features, footer)
+- Dashboard for post management
+- Draft vs published status
+- Loading states (skeleton loaders)
+- Error handling with user-friendly messages
+- Mobile-responsive design
+- Markdown editor
+
+### Priority 3: Bonus features (partial)
+- Post statistics (word count, reading time)
+- Syntax highlighting for code blocks
+- SEO-friendly slugs with auto-generation
+- Full dark mode theme
+
+---
+
+## Technology stack
 
 ### Backend
-
-- **Node.js + Express** - Web server
-
-- **tRPC v11** - Type-safe API layer
-
-- **PostgreSQL** - Relational database (Neon cloud)**💻 Terminal 2: Frontend**```- [x] **Individual post view page** - Full post display with markdown rendering
-
-- **Drizzle ORM v0.36** - Type-safe database access
-
-- **Zod v3** - Schema validation
-
-- **SuperJSON** - Data serialization
-
-```bash
+- Node.js and Express — Web server
+- tRPC v11 — Type-safe API layer
+- PostgreSQL — Relational database (Neon cloud)
+- Drizzle ORM v0.36 — Type-safe database access
+- Zod v3 — Schema validation
+- SuperJSON — Data serialization
 
 ### Frontend
-
-- **Next.js 15** - React framework with App Routercd frontend
-
-- **TypeScript 5** - Full type safety
-
-- **Tailwind CSS** - Utility-first stylingnpm run devCreate `.env` file in `kapybara/`:#### **Step 2: Backend Setup**
-
-- **tRPC Client** - Type-safe API calls
-
-- **React Query** - Server state management```
-
-- **Zustand** - Client state management
-
-- **react-markdown** - Markdown rendering```env
-
-- **react-syntax-highlighter** - Code syntax highlighting
-
-🌐 **Frontend:** `http://localhost:3000`
+- Next.js 15 — React framework with App Router
+- TypeScript 5 — Full type safety
+- Tailwind CSS — Utility-first styling
+- tRPC Client — Type-safe API calls
+- React Query — Server state management
+- Zustand — Client state management
+- react-markdown — Markdown rendering
+- react-syntax-highlighter — Code syntax highlighting
 
 ---
 
-DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require"```bash### Installation & Setup- [x] **Category filtering** - Filter posts by categories
-
-## 🏗️ Project Architecture
-
-</td>
+## Project architecture
 
 ```
-
-FullKapybara/</tr>PORT=4000
-
+FullKapybara/
 ├── kapybara/                   # Backend
-
-│   ├── src/</table>
-
+│   ├── src/
 │   │   ├── server.ts          # Express + tRPC server
-
-│   │   ├── lib/db/FRONTEND_URL=http://localhost:3000cd kapybara
-
+│   │   ├── lib/db/
 │   │   │   ├── index.ts       # Database connection
-
-│   │   │   └── schema.ts      # Drizzle schemas---
-
+│   │   │   └── schema.ts      # Drizzle schemas
 │   │   └── server/api/
-
-│   │       ├── trpc.ts        # tRPC config```
-
+│   │       ├── trpc.ts        # tRPC config
 │   │       ├── root.ts        # Root router
-
-│   │       └── routers/## 📋 Available Commands
-
+│   │       └── routers/
 │   │           ├── posts.ts
-
-│   │           └── categories.tsnpm install- [x] **Responsive navigation** - Mobile-friendly navigation with hamburger menu
-
+│   │           └── categories.ts
 │   ├── scripts/
-
-│   │   ├── seed.ts### Backend Commands (`kapybara/`)
-
+│   │   ├── seed.ts
 │   │   └── clean-db.ts
-
-│   └── drizzle/               # MigrationsInitialize database:
-
+│   └── drizzle/               # Migrations
 │
-
-└── frontend/                   # Frontend| Command | Description |
-
+└── frontend/                   # Frontend
     ├── app/                   # Next.js App Router
-
-    │   ├── layout.tsx         # Root layout|---------|-------------|```bash```
-
+    │   ├── layout.tsx         # Root layout
     │   ├── page.tsx           # Landing page
-
-    │   ├── blog/              # Blog pages| `npm run dev` | Start development server with hot reload |
-
+    │   ├── blog/              # Blog pages
     │   └── dashboard/         # Management pages
-
-    ├── components/| `npm run build` | Compile TypeScript to JavaScript |npm run db:push
-
+    ├── components/
     │   ├── ui/                # Reusable components
-
-    │   └── layout/            # Layout components| `npm start` | Run production build |
-
+    │   └── layout/            # Layout components
     ├── lib/
-
-    │   ├── trpc.ts            # tRPC client| `npm run db:push` | Push database schema to PostgreSQL |npm run db:seed1. **Clone the repository**- [x] **Clean, professional UI** - Modern, accessible interface using Tailwind CSS
-
+    │   ├── trpc.ts            # tRPC client
     │   └── utils.ts           # Utilities
-
-    ├── providers/| `npm run db:studio` | Open Drizzle Studio (database GUI) |
-
+    ├── providers/
     │   └── trpc-provider.tsx  # React Query provider
-
-    └── store/| `npm run db:seed` | Seed database with sample data |```
-
+    └── store/
         └── ui-store.ts        # Zustand store
+```
 
-```| `npm run db:clean` | Drop all database tables (reset) |
+---
 
+## Design decisions
 
-
----Create `.env` file in `kapybara/`:
-
-
-
-## 💡 Design Decisions### Frontend Commands (`frontend/`)
-
-
-
-### Why Markdown Over Rich Text Editor?#### **Step 3: Frontend Setup**
-
-- Faster implementation (saves 2-3 hours)
-
-- Better version control compatibility| Command | Description |
-
+### Why markdown over a rich text editor?
+- Faster implementation (saves time)
+- Better version control compatibility
 - Familiar to developers
+- Lightweight and performant
 
-- Lightweight and performant|---------|-------------|```bash```env   ```bash
-
-
-
-### Why tRPC?| `npm run dev` | Start Next.js development server |
-
+### Why tRPC?
 - End-to-end type safety without code generation
-
-- Automatic type inference from backend to frontend| `npm run build` | Build for production |cd ../frontend
-
+- Automatic type inference from backend to frontend
 - Built-in React Query integration
+- Superior DX compared to REST/GraphQL
 
-- Superior DX compared to REST/GraphQL| `npm start` | Run production build |
-
-
-
-### Why Drizzle ORM?| `npm run lint` | Run ESLint |npm installDATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require"
-
+### Why Drizzle ORM?
 - Excellent TypeScript support
-
 - SQL-like syntax (easier than Prisma)
-
 - Lightweight with minimal overhead
-
-- Simple migration system---```
-
-
+- Simple migration system
 
 ### Why Zustand?
-
 - Minimal boilerplate
-
-- No providers needed## 🗺️ Application RoutesPORT=4000   git clone <your-repo-url>### ✅ Priority 2 - Expected Features (Should Have)
-
+- No providers needed
 - Small bundle size (~1KB)
-
 - Perfect for UI state
 
+---
 
+## Code quality
 
----### 🌐 Frontend RoutesCreate `.env.local` file in `frontend/`:
-
-
-
-## 🎨 Code Quality
-
-
-
-**Type Safety:**<details open>```envFRONTEND_URL=http://localhost:3000
-
+Type safety:
 - Strict TypeScript throughout
-
-- End-to-end type inference via tRPC<summary><b>📖 Public Pages</b></summary>
-
+- End-to-end type inference via tRPC
 - Zod schemas for runtime validation
 
-<br>NEXT_PUBLIC_API_URL=http://localhost:4000
-
-**Error Handling:**
-
-- Try-catch blocks in all API procedures
-
+Error handling:
+- Try-catch blocks in API procedures
 - User-friendly error messages
+- Loading states throughout UI
 
-- Loading states throughout UI| Route | Description |``````   cd FullKapybara- [x] **Landing page** - Hero section, features showcase, and CTA sections
-
-
-
-**Performance:**|-------|-------------|
-
+Performance:
 - React Query caching
-
-- Optimistic UI updates| `/` | Landing page with hero and features |
-
+- Optimistic UI updates
 - Next.js automatic code splitting
+- Lazy loading components
 
-- Lazy loading components| `/blog` | Blog listing with category filtering |
-
-
-
-**User Experience:**| `/blog/[slug]` | Individual post with markdown rendering |### ▶️ Running the Application
-
+User experience:
 - Skeleton loaders for content
-
 - Instant feedback on actions
-
 - Mobile-responsive design
-
-- Dark theme throughout</details>
-
+- Dark theme throughout
 - Smooth transitions
 
-
-
 ---
 
-<details open><table>Initialize database:   ```- [x] **Dashboard page** - Central hub for managing posts and categories
+## Deployment
 
-## 🚀 Deployment
-
-<summary><b>🎛️ Dashboard (Management)</b></summary>
-
-### Backend (Railway/Render)
-
-1. Create new project<br><tr>
-
+### Backend (Railway or Render)
+1. Create new project
 2. Connect GitHub repository
-
 3. Set environment variables:
-
    - `DATABASE_URL`
-
-   - `PORT`| Route | Description |<td width="50%">```bash
-
+   - `PORT`
    - `FRONTEND_URL`
-
-   - `NODE_ENV=production`|-------|-------------|
-
+   - `NODE_ENV=production`
 4. Deploy from `kapybara` directory
 
-| `/dashboard` | View all posts (published & drafts) |
-
 ### Frontend (Vercel)
-
-1. Import project from GitHub| `/dashboard/new` | Create new blog post |
-
+1. Import project from GitHub
 2. Set framework: Next.js
-
-3. Set root directory: `frontend`| `/dashboard/edit/[id]` | Edit existing post |**🔧 Terminal 1: Backend**npm run db:push- [x] **Draft vs Published status** - Save drafts and publish when ready
-
+3. Set root directory: `frontend`
 4. Set environment variable:
-
-   - `NEXT_PUBLIC_API_URL` = your backend URL| `/dashboard/categories` | Manage categories (CRUD) |
-
+   - `NEXT_PUBLIC_API_URL` = your backend URL
 5. Deploy
 
-
-
-### Database (Neon/Supabase)
-
-- Free PostgreSQL hosting</details>
-
+### Database (Neon or Supabase)
+- Free PostgreSQL hosting
 - Automatic backups
+- Connection pooling
 
-- Connection pooling```bashnpm run db:seed
+---
 
+## Assessment summary
 
+Status: complete and ready for review
 
-------
-
-
-
-## 📊 Assessment Summarycd kapybara
-
-
-
-**Status:** ✅ Complete and Ready for Review### 🔌 Backend API Routes (tRPC)
-
-
-
-**Technical Skills Demonstrated:**npm run dev```2. **Backend Setup**- [x] **Loading states** - Skeleton loaders and spinners throughout
-
-- Modern React patterns (Server & Client Components)
-
-- Type-safe full-stack development with tRPC**Base URL:** `http://localhost:4000/trpc`
-
+Technical skills demonstrated:
+- Modern React patterns (Server and Client Components)
+- Type-safe full-stack development with tRPC
 - Database design with proper relationships
-
-- API design with RESTful principles```
-
+- API design with RESTful principles
 - State management strategies
+- Responsive web design
 
-- Responsive web design<details open>
-
-
-
-**Best Practices:**<summary><b>📄 Posts Router (`posts.*`)</b></summary>
-
+Best practices:
 - Clean code architecture
-
-- Separation of concerns<br>
-
+- Separation of concerns
 - Comprehensive error handling
-
-- Type safety throughout🌐 **Backend:** `http://localhost:4000`
-
+- Type safety throughout
 - Loading and error states
+- Mobile-first responsive design
 
-- Mobile-first responsive design| Endpoint | Type | Description | Input | Output |
-
-
-
-**Production Quality:**|----------|------|-------------|-------|--------|#### **Step 3: Frontend Setup**   ```bash- [x] **Error handling** - User-friendly error messages and graceful recovery
-
+Production quality:
 - Input validation and sanitization
-
-- Database constraints and cascading| `posts.getAll` | Query | Get all posts | `{ published?: boolean }` | Post array |
-
+- Database constraints and cascading
 - Optimistic UI updates
-
-- Caching strategies| `posts.getPublished` | Query | Get published posts only | - | Post array |</td>
-
+- Caching strategies
 - Professional UI/UX
 
-| `posts.getBySlug` | Query | Get post by slug | `{ slug: string }` | Post + categories |
+---
+
+## Notes
+
+Authentication: Not implemented as per assessment requirements. The platform is public and does not require user authentication.
+
+Testing: Not included in this assessment scope, but the architecture supports easy integration of Jest, React Testing Library, and Playwright.
+
+Scalability: The codebase is structured to easily add features like user authentication, image uploads, comments, search, pagination, and tags.
 
 ---
 
-| `posts.create` | Mutation | Create new post | Post data + category IDs | Created post |<td width="50%">```bash
+## License
 
-## 📝 Notes
+MIT License — free to use for learning and reference.
 
-| `posts.update` | Mutation | Update post | Post ID + updated data | Updated post |
-
-**Authentication:** Not implemented as per assessment requirements. The platform is public and does not require user authentication.
-
-| `posts.delete` | Mutation | Delete post | `{ id: number }` | Success message |
-
-**Testing:** Not included in this assessment scope, but the architecture supports easy integration of Jest, React Testing Library, and Playwright.
-
-| `posts.generateSlug` | Query | Generate unique slug | `{ text: string }` | Unique slug |
-
-**Scalability:** The codebase is structured to easily add features like user authentication, image uploads, comments, search, pagination, and tags.
-
-**💻 Terminal 2: Frontend**cd ../frontend   cd kapybara- [x] **Mobile-responsive design** - Fully responsive across all devices
-
----
-
-</details>
-
-## 📄 License
-
-
-
-MIT License - Free to use for learning and reference.
-
-<details open>
-
----
-
-<summary><b>📁 Categories Router (`categories.*`)</b></summary>```bashnpm install
-
-**Built with ❤️ for Full-Stack Developer Assessment**
-
-<br>
-
-![Made with TypeScript](https://img.shields.io/badge/Made%20with-TypeScript-3178C6?style=flat-square&logo=typescript)
-
-![Powered by Next.js](https://img.shields.io/badge/Powered%20by-Next.js-000000?style=flat-square&logo=next.js)cd frontend
-
-![Database PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-316192?style=flat-square&logo=postgresql)
-
-| Endpoint | Type | Description | Input | Output |
-
-|----------|------|-------------|-------|--------|npm run dev```   npm install- [x] **Markdown editor** - Simple textarea-based markdown editor
-
-| `categories.getAll` | Query | Get all categories | - | Category array |
-
-| `categories.getBySlug` | Query | Get single category | `{ slug: string }` | Single category |```
-
-| `categories.create` | Mutation | Create category | Category data | Created category |
-
-| `categories.update` | Mutation | Update category | ID + data | Updated category |
-
-| `categories.delete` | Mutation | Delete category | `{ id: number }` | Success message |
-
-| `categories.generateSlug` | Query | Generate unique slug | `{ text: string }` | Unique slug |🌐 **Frontend:** `http://localhost:3000`
-
-
-
-</details>Create `.env.local` file in `frontend/`:   ```
-
-
-
----</td>
-
-
-
-## ✅ Assessment Features Implemented</tr>```env
-
-
-
-<table></table>
-
-<tr>
-
-<td width="33%">NEXT_PUBLIC_API_URL=http://localhost:4000### ✅ Priority 3 - Bonus Features (Nice to Have)
-
-
-
-### 🎯 Priority 1---
-
-**Core Requirements**
-
-```
-
-![Progress](https://img.shields.io/badge/Progress-100%25-success?style=flat-square)
-
-## 📋 Available Commands
-
-- ✅ Blog Post CRUD
-
-- ✅ Category CRUD   Create `.env` file:- [x] **Post statistics** - Word count and reading time calculation
-
-- ✅ Many-to-Many Relations
-
-- ✅ Blog Listing Page### Backend Commands (`kapybara/`)
-
-- ✅ Individual Post View
-
-- ✅ Category Filtering### Running the Application
-
-- ✅ Responsive Navigation
-
-- ✅ Professional UI| Command | Description |
-
-
-
-</td>|---------|-------------|   ```env- [x] **Syntax highlighting** - Code blocks with syntax highlighting using Prism
-
-<td width="33%">
-
-| `npm run dev` | Start development server with hot reload |
-
-### 🎯 Priority 2
-
-**Expected Features**| `npm run build` | Compile TypeScript to JavaScript |**Terminal 1 (Backend):**
-
-
-
-![Progress](https://img.shields.io/badge/Progress-100%25-success?style=flat-square)| `npm start` | Run production build |
-
-
-
-- ✅ Landing Page| `npm run db:push` | Push database schema to PostgreSQL |```bash   DATABASE_URL="postgresql://user:password@host/database?sslmode=require"- [x] **SEO-friendly slugs** - Auto-generation with uniqueness validation
-
-- ✅ Dashboard
-
-- ✅ Draft vs Published| `npm run db:studio` | Open Drizzle Studio (database GUI) |
-
-- ✅ Loading States
-
-- ✅ Error Handling| `npm run db:seed` | Seed database with sample data |cd kapybara
-
-- ✅ Mobile Responsive
-
-- ✅ Markdown Editor| `npm run db:clean` | Drop all database tables (reset) |
-
-
-
-</td>npm run dev   PORT=4000
-
-<td width="34%">
-
-### Frontend Commands (`frontend/`)
-
-### 🎯 Priority 3
-
-**Bonus Features**```
-
-
-
-![Progress](https://img.shields.io/badge/Progress-Partial-blue?style=flat-square)| Command | Description |
-
-
-
-- ✅ Post Statistics|---------|-------------|Backend: `http://localhost:4000`   FRONTEND_URL=http://localhost:3000## 🛠️ Tech Stack
-
-- ✅ Syntax Highlighting
-
-- ✅ SEO-friendly Slugs| `npm run dev` | Start Next.js development server |
-
-- ✅ Dark Mode
-
-| `npm run build` | Build for production |
-
-</td>
-
-</tr>| `npm start` | Run production build |
-
-</table>
-
-| `npm run lint` | Run ESLint |**Terminal 2 (Frontend):**   ```
-
----
-
-
-
-## 🧰 Technology Stack
-
----```bash
-
-<table>
-
-<tr>
-
-<td width="50%">
-
-## 🗺️ Application Routescd frontend### Frontend
-
-### 🔧 Backend
-
-
-
-| Technology | Purpose |
-
-|------------|---------|### 🌐 Frontend Routesnpm run dev
-
-| **Node.js + Express** | Web server |
-
-| **tRPC v11** | Type-safe API layer |
-
-| **PostgreSQL** | Relational database |
-
-| **Drizzle ORM v0.36** | Type-safe database access |<details open>```   Initialize database:- **Next.js 15** - React framework with App Router
-
-| **Zod v3** | Schema validation |
-
-| **SuperJSON** | Data serialization |<summary><b>📖 Public Pages</b></summary>
-
-
-
-</td><br>Frontend: `http://localhost:3000`
-
-<td width="50%">
-
-
-
-### 💻 Frontend
-
-| Route | Description |   ```bash- **TypeScript** - Full type safety
-
-| Technology | Purpose |
-
-|------------|---------||-------|-------------|
-
-| **Next.js 15** | React framework (App Router) |
-
-| **TypeScript 5** | Full type safety || `/` | Landing page with hero and features |---
-
-| **Tailwind CSS** | Utility-first styling |
-
-| **tRPC Client** | Type-safe API calls || `/blog` | Blog listing with category filtering |
-
-| **React Query** | Server state management |
-
-| **Zustand** | Client state management || `/blog/[slug]` | Individual post with markdown rendering |   npm run db:push- **Tailwind CSS** - Utility-first styling
-
-| **react-markdown** | Markdown rendering |
-
-| **react-syntax-highlighter** | Code highlighting |
-
-
-
-</td></details>## Available Commands
-
-</tr>
-
-</table>
-
-
-
----<details open>   npm run db:seed- **tRPC Client** - Type-safe API calls
-
-
-
-## 🎓 Assessment Completion Summary<summary><b>🎛️ Dashboard (Management)</b></summary>
-
-
-
-<div align="center"><br>### Backend (`kapybara/`)
-
-
-
-### Project Status: ✅ **Complete and Ready for Review**
-
-
-
-</div>| Route | Description || Command | Description |   ```- **React Query** - Server state management (via tRPC)
-
-
-
-**📚 Technical Skills Demonstrated:**|-------|-------------|
-
-- Modern React patterns (Server Components, Client Components)
-
-- Type-safe full-stack development with tRPC| `/dashboard` | View all posts (published & drafts) ||---------|-------------|
-
-- Database design with proper relationships
-
-- API design with RESTful principles| `/dashboard/new` | Create new blog post |
-
-- State management strategies
-
-- Responsive web design| `/dashboard/edit/[id]` | Edit existing post || `npm run dev` | Start development server with hot reload |- **Zustand** - Client state management for UI
-
-
-
-**✨ Best Practices:**| `/dashboard/categories` | Manage categories (CRUD) |
-
-- Clean code architecture
-
-- Separation of concerns| `npm run build` | Compile TypeScript to JavaScript |
-
-- Error handling and validation
-
-- Type safety throughout</details>
-
-- Loading and error states
-
-- Mobile-first responsive design| `npm start` | Run production build |3. **Frontend Setup**- **React Markdown** - Markdown rendering with GFM support
-
-
-
-**🏆 Production Quality:**---
-
-- Comprehensive error handling
-
-- Input validation and sanitization| `npm run db:push` | Push database schema to PostgreSQL |
-
-- Database constraints and cascading
-
-- Optimistic UI updates### 🔌 Backend API Routes (tRPC)
-
-- Caching strategies
-
-- Professional UI/UX| `npm run db:studio` | Open Drizzle Studio (database GUI) |   ```bash- **React Syntax Highlighter** - Code syntax highlighting
-
-
-
----**Base URL:** `http://localhost:4000/trpc`
-
-
-
-<div align="center">| `npm run db:seed` | Seed database with sample data |
-
-
-
-## 📄 License<details open>
-
-
-
-**MIT License** - Free to use for learning and reference purposes.<summary><b>📄 Posts Router (`posts.*`)</b></summary>| `npm run db:clean` | Drop all database tables (reset) |   cd ../frontend
-
-
-
----<br>
-
-
-
-**Built with ❤️ for Full-Stack Developer Assessment**
-
-
-
-![Made with TypeScript](https://img.shields.io/badge/Made%20with-TypeScript-3178C6?style=flat-square&logo=typescript)| Endpoint | Type | Description | Input | Output |
-
-![Powered by Next.js](https://img.shields.io/badge/Powered%20by-Next.js-000000?style=flat-square&logo=next.js)
-
-![Database PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-316192?style=flat-square&logo=postgresql)|----------|------|-------------|-------|--------|### Frontend Commands (`frontend/`)   npm install### Backend
-
-
-
-</div>| `posts.getAll` | Query | Get all posts | `{ published?: boolean }` | Post array |
 
 
 | `posts.getPublished` | Query | Get published posts only | - | Post array || Command | Description |
