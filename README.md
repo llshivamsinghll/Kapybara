@@ -1,6 +1,10 @@
 # Full-Stack Blogging Platform
 
+<<<<<<< HEAD
 project: a modern multi-user blogging platform demonstrating production-quality code, end-to-end type safety, and a clean architecture.
+=======
+Assessment project: a modern multi-user blogging platform demonstrating production-quality code, end-to-end type safety, and a clean architecture.
+>>>>>>> 31f2530 (readme)
 
 ---
 
