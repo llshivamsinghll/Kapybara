@@ -9,10 +9,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { Loading } from '@/components/ui/loading';
 import type { Category } from '@/types';
+import { use } from 'react';
 
-export default function EditPostPage({ params }: { params: { id: string } }) {
+export default function EditPostPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
-  const postId = parseInt(params.id);
+  const { id } = use(params);
+  const postId = parseInt(id);
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
