@@ -106,7 +106,7 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
         <Card className="p-8 text-center">
           <h2 className="text-2xl font-bold mb-2">Post Not Found</h2>
           <p className="text-muted-foreground mb-4">
-            The post you're trying to edit doesn't exist.
+            The post you&apos;re trying to edit doesn&apos;t exist.
           </p>
           <Button onClick={() => router.push('/dashboard')}>
             Back to Dashboard
