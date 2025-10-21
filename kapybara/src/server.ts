@@ -8,10 +8,12 @@ import { createTRPCContext } from './server/api/trpc';
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Enable CORS for frontend
+// Enable CORS for all origins
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true,
+  origin: '*', // Allow all origins
+  credentials: false, // Set to false when using origin: '*'
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 app.use(express.json());

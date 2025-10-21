@@ -2,260 +2,284 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { trpc } from '@/lib/trpc';
+import { trpc } from '@/providers/trpc-provider';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { LoadingSpinner } from '@/components/ui/loading';
-import { generateSlug } from '@/lib/utils';
-import type { Category } from '@/types/trpc';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Loading } from '@/components/ui/loading';
+import type { Category } from '@/types';
 
 export default function CategoriesPage() {
   const router = useRouter();
-  const utils = trpc.useUtils();
+  const utils = trpc.useContext();
 
-  const [showForm, setShowForm] = useState(false);
+  const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+
+  // Form state
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [slug, setSlug] = useState('');
-  const [autoGenerateSlug, setAutoGenerateSlug] = useState(true);
+  const [error, setError] = useState('');
 
+  // Fetch categories
   const { data: categories, isLoading } = trpc.categories.getAll.useQuery();
 
+  // Create mutation
   const createMutation = trpc.categories.create.useMutation({
     onSuccess: () => {
       utils.categories.getAll.invalidate();
       resetForm();
     },
-    onError: (error) => {
-      alert(`Error creating category: ${error.message}`);
+    onError: (err) => {
+      setError(err.message || 'Failed to create category');
     },
   });
 
+  // Update mutation
   const updateMutation = trpc.categories.update.useMutation({
     onSuccess: () => {
       utils.categories.getAll.invalidate();
       resetForm();
     },
-    onError: (error) => {
-      alert(`Error updating category: ${error.message}`);
+    onError: (err) => {
+      setError(err.message || 'Failed to update category');
     },
   });
 
+  // Delete mutation
   const deleteMutation = trpc.categories.delete.useMutation({
     onSuccess: () => {
       utils.categories.getAll.invalidate();
+      setDeletingId(null);
     },
-    onError: (error) => {
-      alert(`Error deleting category: ${error.message}`);
+    onError: (err) => {
+      alert(`Error deleting category: ${err.message}`);
+      setDeletingId(null);
     },
   });
 
   const resetForm = () => {
     setName('');
     setDescription('');
-    setSlug('');
-    setAutoGenerateSlug(true);
+    setError('');
+    setShowCreateForm(false);
     setEditingId(null);
-    setShowForm(false);
   };
 
   const handleEdit = (category: Category) => {
-    setEditingId(category.id);
     setName(category.name);
     setDescription(category.description || '');
-    setSlug(category.slug);
-    setAutoGenerateSlug(false);
-    setShowForm(true);
+    setEditingId(category.id);
+    setShowCreateForm(false);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
 
-    if (!name.trim() || !slug.trim()) {
-      alert('Please fill in all required fields');
+    if (!name.trim()) {
+      setError('Category name is required');
       return;
     }
 
-    const data = {
-      name: name.trim(),
-      description: description.trim() || undefined,
-      slug: slug.trim(),
-    };
+    const slug = name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
 
     if (editingId) {
-      updateMutation.mutate({ id: editingId, ...data });
+      updateMutation.mutate({
+        id: editingId,
+        name: name.trim(),
+        slug,
+        description: description.trim() || undefined,
+      });
     } else {
-      createMutation.mutate(data);
+      createMutation.mutate({
+        name: name.trim(),
+        slug,
+        description: description.trim() || undefined,
+      });
     }
   };
 
   const handleDelete = (id: number, name: string) => {
-    if (confirm(`Are you sure you want to delete the category "${name}"? This will remove it from all associated posts.`)) {
+    if (confirm(`Are you sure you want to delete "${name}"? This will remove it from all posts.`)) {
+      setDeletingId(id);
       deleteMutation.mutate({ id });
     }
   };
 
-  // Auto-generate slug from name
-  useState(() => {
-    if (autoGenerateSlug && name) {
-      setSlug(generateSlug(name));
-    }
-  });
+  const isSubmitting = createMutation.isPending || updateMutation.isPending;
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Header */}
-      <div className="mb-8">
-        <Button variant="ghost" onClick={() => router.back()}>
-          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          Back to Dashboard
-        </Button>
-      </div>
-
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-        <div>
-          <h1 className="text-4xl font-bold text-white mb-2">Categories</h1>
-          <p className="text-zinc-400">Manage your blog categories</p>
-        </div>
-        <Button onClick={() => setShowForm(!showForm)}>
-          {showForm ? 'Cancel' : 'New Category'}
-        </Button>
-      </div>
-
-      {/* Form */}
-      {showForm && (
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>{editingId ? 'Edit Category' : 'Create New Category'}</CardTitle>
-            <CardDescription>
-              {editingId ? 'Update category information' : 'Add a new category to organize your posts'}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Input
-                label="Name *"
-                value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                  if (autoGenerateSlug) {
-                    setSlug(generateSlug(e.target.value));
-                  }
-                }}
-                placeholder="e.g., Technology, Travel, Lifestyle"
-                required
-              />
-
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label className="block text-sm font-medium text-zinc-300">Slug *</label>
-                  {!editingId && (
-                    <label className="flex items-center text-sm text-zinc-400">
-                      <input
-                        type="checkbox"
-                        checked={autoGenerateSlug}
-                        onChange={(e) => setAutoGenerateSlug(e.target.checked)}
-                        className="mr-2 rounded border-zinc-700 bg-zinc-900 text-indigo-500 focus:ring-indigo-500"
-                      />
-                      Auto-generate
-                    </label>
-                  )}
-                </div>
-                <Input
-                  value={slug}
-                  onChange={(e) => {
-                    setSlug(e.target.value);
-                    setAutoGenerateSlug(false);
-                  }}
-                  placeholder="category-slug"
-                  required
-                  disabled={autoGenerateSlug && !editingId}
-                />
-              </div>
-
-              <Textarea
-                label="Description (Optional)"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Brief description of this category"
-                rows={3}
-              />
-
-              <div className="flex gap-3 justify-end">
-                <Button type="button" variant="outline" onClick={resetForm}>
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  isLoading={createMutation.isPending || updateMutation.isPending}
-                >
-                  {editingId ? 'Update Category' : 'Create Category'}
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Categories List */}
-      {isLoading ? (
-        <div className="flex justify-center py-12">
-          <LoadingSpinner size="lg" />
-        </div>
-      ) : categories && categories.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {categories.map((category: Category) => (
-            <Card key={category.id} className="hover:shadow-md transition-shadow">
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <CardTitle className="mb-2">{category.name}</CardTitle>
-                    <CardDescription>
-                      {category.description || 'No description'}
-                    </CardDescription>
-                    <div className="mt-2 text-xs text-zinc-500">
-                      Slug: {category.slug}
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleEdit(category)}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => handleDelete(category.id, category.name)}
-                      isLoading={deleteMutation.isPending}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </div>
-              </CardHeader>
-            </Card>
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-zinc-800 mb-4">
-            <svg className="w-8 h-8 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-            </svg>
+    <div className="min-h-screen py-12">
+      <div className="container mx-auto px-4 max-w-5xl">
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-12">
+          <div>
+            <h1 className="text-5xl md:text-6xl font-bold mb-3">Categories</h1>
+            <p className="text-xl text-muted-foreground">Organize your blog posts</p>
           </div>
-          <h3 className="text-xl font-semibold text-white mb-2">No categories yet</h3>
-          <p className="text-zinc-400 mb-6">Create your first category to organize your blog posts</p>
-          <Button onClick={() => setShowForm(true)}>Create First Category</Button>
+          <div className="flex gap-3">
+            <Button variant="outline" onClick={() => router.push('/dashboard')}>
+              Back to Dashboard
+            </Button>
+            <Button
+              onClick={() => {
+                resetForm();
+                setShowCreateForm(!showCreateForm);
+              }}
+            >
+              {showCreateForm ? 'Cancel' : 'New Category'}
+            </Button>
+          </div>
         </div>
-      )}
+
+        {/* Create/Edit Form */}
+        {(showCreateForm || editingId) && (
+          <Card className="mb-8 border-2 border-primary">
+            <CardHeader>
+              <CardTitle className="text-2xl mb-6">
+                {editingId ? 'Edit Category' : 'Create New Category'}
+              </CardTitle>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium mb-2">
+                    Name *
+                  </label>
+                  <Input
+                    id="name"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="e.g., Technology, Travel, Food"
+                    className="w-full"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="description" className="block text-sm font-medium mb-2">
+                    Description
+                  </label>
+                  <Textarea
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Brief description of this category (optional)"
+                    rows={3}
+                    className="w-full"
+                  />
+                </div>
+
+                {error && (
+                  <div className="p-4 bg-destructive/10 border border-destructive rounded-md text-destructive text-sm">
+                    {error}
+                  </div>
+                )}
+
+                <div className="flex gap-3">
+                  <Button type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? 'Saving...' : editingId ? 'Update Category' : 'Create Category'}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={resetForm}
+                    disabled={isSubmitting}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </form>
+            </CardHeader>
+          </Card>
+        )}
+
+        {/* Categories List */}
+        {isLoading ? (
+          <div className="flex justify-center py-12">
+            <Loading />
+          </div>
+        ) : categories && categories.length > 0 ? (
+          <div>
+            <h2 className="text-2xl font-bold mb-6">
+              All Categories ({categories.length})
+            </h2>
+            <div className="grid gap-4">
+              {categories.map((category: Category) => (
+                <Card
+                  key={category.id}
+                  className={`transition-all ${
+                    editingId === category.id ? 'border-2 border-primary' : 'hover:border-primary'
+                  }`}
+                >
+                  <CardHeader>
+                    <div className="flex flex-col md:flex-row justify-between gap-4">
+                      <div className="flex-1">
+                        <CardTitle className="mb-2">{category.name}</CardTitle>
+                        {category.description && (
+                          <CardDescription className="text-base">
+                            {category.description}
+                          </CardDescription>
+                        )}
+                        <CardDescription className="mt-2 text-sm">
+                          Slug: <span className="font-mono">{category.slug}</span>
+                        </CardDescription>
+                      </div>
+                      <div className="flex gap-2 items-start">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEdit(category)}
+                          disabled={isSubmitting}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={() => handleDelete(category.id, category.name)}
+                          disabled={deletingId === category.id}
+                          isLoading={deletingId === category.id}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </div>
+                  </CardHeader>
+                </Card>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-20 bg-card border-2 rounded-lg">
+            <svg
+              className="w-16 h-16 mx-auto mb-4 text-muted-foreground"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+              />
+            </svg>
+            <h3 className="text-2xl font-bold mb-3">No categories yet</h3>
+            <p className="text-muted-foreground mb-8">
+              Create your first category to organize your blog posts
+            </p>
+            <Button onClick={() => setShowCreateForm(true)}>
+              Create Your First Category
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -65,6 +65,46 @@ export const postRouter = router({
       return await baseQuery;
     }),
 
+  // Get single post by ID
+  getById: publicProcedure
+    .input(z.number())
+    .query(async ({ input }) => {
+      const [post] = await db
+        .select({
+          id: posts.id,
+          title: posts.title,
+          content: posts.content,
+          excerpt: posts.excerpt,
+          slug: posts.slug,
+          published: posts.published,
+          createdAt: posts.createdAt,
+          updatedAt: posts.updatedAt,
+          categories: sql<Array<{ id: number; name: string; slug: string }>>`
+            COALESCE(
+              json_agg(
+                DISTINCT jsonb_build_object(
+                  'id', ${categories.id},
+                  'name', ${categories.name},
+                  'slug', ${categories.slug}
+                )
+              ) FILTER (WHERE ${categories.id} IS NOT NULL),
+              '[]'
+            )
+          `.as('categories'),
+        })
+        .from(posts)
+        .leftJoin(postCategories, eq(posts.id, postCategories.postId))
+        .leftJoin(categories, eq(postCategories.categoryId, categories.id))
+        .where(eq(posts.id, input))
+        .groupBy(posts.id);
+
+      if (!post) {
+        throw new Error('Post not found');
+      }
+
+      return post;
+    }),
+
   // Get single post by slug
   getBySlug: publicProcedure
     .input(z.object({ slug: z.string() }))

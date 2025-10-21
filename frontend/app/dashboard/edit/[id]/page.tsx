@@ -1,77 +1,90 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { trpc } from '@/lib/trpc';
+import { useRouter } from 'next/navigation';
+import { trpc } from '@/providers/trpc-provider';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { LoadingSpinner } from '@/components/ui/loading';
-import type { Post, Category } from '@/types/trpc';
+import { Card } from '@/components/ui/card';
+import { Loading } from '@/components/ui/loading';
+import type { Category } from '@/types';
 
-export default function EditPostPage() {
-  const params = useParams();
+export default function EditPostPage({ params }: { params: { id: string } }) {
   const router = useRouter();
-  const utils = trpc.useUtils();
-  const postId = parseInt(params.id as string);
+  const postId = parseInt(params.id);
 
   const [title, setTitle] = useState('');
-  const [slug, setSlug] = useState('');
-  const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
-  const [published, setPublished] = useState(false);
+  const [excerpt, setExcerpt] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-  const [initialized, setInitialized] = useState(false);
+  const [published, setPublished] = useState(false);
+  const [error, setError] = useState('');
 
-  const { data: post, isLoading: postLoading } = trpc.posts.getAll.useQuery({});
-  const { data: categories } = trpc.categories.getAll.useQuery();
+  // Fetch post data
+  const { data: post, isLoading: postLoading } = trpc.posts.getById.useQuery(postId);
 
-  const currentPost = post?.find((p: Post) => p.id === postId);
+  // Fetch categories
+  const { data: categories, isLoading: categoriesLoading } = trpc.categories.getAll.useQuery();
 
-  const updateMutation = trpc.posts.update.useMutation({
+  // Update post mutation
+  const updatePost = trpc.posts.update.useMutation({
     onSuccess: () => {
-      utils.posts.getAll.invalidate();
       router.push('/dashboard');
     },
-    onError: (error) => {
-      alert(`Error updating post: ${error.message}`);
+    onError: (err) => {
+      setError(err.message || 'Failed to update post');
     },
   });
 
-  // Initialize form with post data
+  // Populate form when post data loads
   useEffect(() => {
-    if (currentPost && !initialized) {
-      setTitle(currentPost.title);
-      setSlug(currentPost.slug);
-      setExcerpt(currentPost.excerpt || '');
-      setContent(currentPost.content);
-      setPublished(currentPost.published);
-      setSelectedCategories(currentPost.categories?.map((c: Category) => c.id) || []);
-      setInitialized(true);
+    if (post) {
+      setTitle(post.title);
+      setContent(post.content);
+      setExcerpt(post.excerpt || '');
+      setPublished(post.published);
+      setSelectedCategories(post.categories?.map((c: Category) => c.id) || []);
     }
-  }, [currentPost, initialized]);
+  }, [post]);
 
-  const handleSubmit = async (e: React.FormEvent, shouldPublish: boolean) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
 
-    if (!title.trim() || !content.trim() || !slug.trim()) {
-      alert('Please fill in all required fields');
+    if (!title.trim()) {
+      setError('Title is required');
       return;
     }
 
-    updateMutation.mutate({
+    if (!content.trim()) {
+      setError('Content is required');
+      return;
+    }
+
+    if (selectedCategories.length === 0) {
+      setError('Please select at least one category');
+      return;
+    }
+
+    // Generate new slug if title changed
+    const slug = title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+
+    updatePost.mutate({
       id: postId,
       title: title.trim(),
-      slug: slug.trim(),
+      slug,
       content: content.trim(),
-      excerpt: excerpt.trim() || undefined,
-      published: shouldPublish,
+      excerpt: excerpt.trim() || content.trim().substring(0, 150) + '...',
+      published,
       categoryIds: selectedCategories,
     });
   };
 
-  const toggleCategory = (categoryId: number) => {
+  const handleCategoryToggle = (categoryId: number) => {
     setSelectedCategories((prev) =>
       prev.includes(categoryId)
         ? prev.filter((id) => id !== categoryId)
@@ -79,175 +92,163 @@ export default function EditPostPage() {
     );
   };
 
-  if (postLoading) {
+  if (postLoading || categoriesLoading) {
     return (
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <LoadingSpinner size="lg" />
+      <div className="min-h-screen flex items-center justify-center">
+        <Loading />
       </div>
     );
   }
 
-  if (!currentPost) {
+  if (!post) {
     return (
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-red-950/50 border border-red-800 rounded-lg p-8 text-center">
-          <h2 className="text-2xl font-semibold text-red-300 mb-2">Post Not Found</h2>
-          <p className="text-red-400 mb-6">The post you&apos;re trying to edit doesn&apos;t exist.</p>
-          <Button onClick={() => router.push('/dashboard')}>Back to Dashboard</Button>
-        </div>
+      <div className="min-h-screen flex items-center justify-center">
+        <Card className="p-8 text-center">
+          <h2 className="text-2xl font-bold mb-2">Post Not Found</h2>
+          <p className="text-muted-foreground mb-4">
+            The post you're trying to edit doesn't exist.
+          </p>
+          <Button onClick={() => router.push('/dashboard')}>
+            Back to Dashboard
+          </Button>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Header */}
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="mb-8">
-        <Button variant="ghost" onClick={() => router.back()}>
-          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          Back to Dashboard
-        </Button>
+        <h1 className="text-4xl font-bold mb-2">Edit Post</h1>
+        <p className="text-muted-foreground">
+          Update your blog post
+        </p>
       </div>
 
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-white mb-2">Edit Post</h1>
-        <p className="text-zinc-400">Update your blog post</p>
-      </div>
-
-      {/* Form */}
-      <form className="space-y-6">
-        {/* Title */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Post Details</CardTitle>
-            <CardDescription>Basic information about your post</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Input
-              label="Title *"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter post title"
-              required
-            />
-
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <Card className="p-6">
+          <div className="space-y-4">
+            {/* Title */}
             <div>
+              <label htmlFor="title" className="block text-sm font-medium mb-2">
+                Title *
+              </label>
               <Input
-                label="Slug *"
-                value={slug}
-                onChange={(e) => setSlug(e.target.value)}
-                placeholder="post-slug"
+                id="title"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter post title"
+                className="w-full"
                 required
               />
-              <p className="mt-1 text-sm text-zinc-500">
-                URL: /blog/{slug || 'post-slug'}
-              </p>
             </div>
 
-            <Textarea
-              label="Excerpt (Optional)"
-              value={excerpt}
-              onChange={(e) => setExcerpt(e.target.value)}
-              placeholder="A brief summary of your post"
-              rows={3}
-            />
-          </CardContent>
-        </Card>
+            {/* Excerpt */}
+            <div>
+              <label htmlFor="excerpt" className="block text-sm font-medium mb-2">
+                Excerpt
+              </label>
+              <Textarea
+                id="excerpt"
+                value={excerpt}
+                onChange={(e) => setExcerpt(e.target.value)}
+                placeholder="Brief description of the post"
+                rows={3}
+                className="w-full"
+              />
+            </div>
 
-        {/* Categories */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Categories</CardTitle>
-            <CardDescription>Select categories for your post</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {categories && categories.length > 0 ? (
-              <div className="flex flex-wrap gap-2">
-                {categories.map((category: Category) => (
-                  <button
+            {/* Content */}
+            <div>
+              <label htmlFor="content" className="block text-sm font-medium mb-2">
+                Content * (Markdown supported)
+              </label>
+              <Textarea
+                id="content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="Write your post content here"
+                rows={16}
+                className="w-full font-mono text-sm"
+                required
+              />
+            </div>
+
+            {/* Categories */}
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Categories *
+              </label>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {categories?.map((category: Category) => (
+                  <label
                     key={category.id}
-                    type="button"
-                    onClick={() => toggleCategory(category.id)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      selectedCategories.includes(category.id)
-                        ? 'bg-indigo-600 text-white'
-                        : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
-                    }`}
+                    className={`
+                      flex items-center gap-2 p-3 rounded-md border-2 cursor-pointer transition-colors
+                      ${
+                        selectedCategories.includes(category.id)
+                          ? 'border-primary bg-primary/10'
+                          : 'border-border hover:border-primary/50'
+                      }
+                    `}
                   >
-                    {category.name}
-                  </button>
+                    <input
+                      type="checkbox"
+                      checked={selectedCategories.includes(category.id)}
+                      onChange={() => handleCategoryToggle(category.id)}
+                      className="w-4 h-4"
+                    />
+                    <span className="text-sm font-medium">{category.name}</span>
+                  </label>
                 ))}
               </div>
-            ) : (
-              <div className="text-center py-4 text-zinc-400">
-                No categories available.{' '}
-                <a href="/dashboard/categories" className="text-indigo-400 hover:underline">
-                  Create one
-                </a>
+            </div>
+
+            {/* Published Toggle */}
+            <div className="flex items-center gap-3 p-4 bg-muted rounded-md">
+              <input
+                type="checkbox"
+                id="published"
+                checked={published}
+                onChange={(e) => setPublished(e.target.checked)}
+                className="w-5 h-5"
+              />
+              <label htmlFor="published" className="flex-1">
+                <div className="font-medium">Published</div>
+                <div className="text-sm text-muted-foreground">
+                  {published
+                    ? 'Post is visible to all users'
+                    : 'Post is saved as draft'}
+                </div>
+              </label>
+            </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className="p-4 bg-destructive/10 border border-destructive rounded-md text-destructive text-sm">
+                {error}
               </div>
             )}
-          </CardContent>
+          </div>
         </Card>
-
-        {/* Content */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Content *</CardTitle>
-            <CardDescription>Write your post content in Markdown format</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="Write your content here using Markdown formatting..."
-              rows={20}
-              className="font-mono text-sm"
-              required
-            />
-            <div className="mt-2 text-sm text-zinc-500">
-              Supports Markdown with GitHub Flavored Markdown (GFM) extensions
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Status Indicator */}
-        <div className="flex items-center gap-2 p-4 bg-zinc-800 rounded-lg">
-          <span className="text-sm font-medium text-zinc-300">Current Status:</span>
-          <span className={`px-3 py-1 rounded-full text-sm font-medium border ${
-            published ? 'bg-green-950 text-green-300 border-green-800' : 'bg-yellow-950 text-yellow-300 border-yellow-800'
-          }`}>
-            {published ? 'Published' : 'Draft'}
-          </span>
-        </div>
 
         {/* Actions */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-end">
+        <div className="flex gap-4">
+          <Button
+            type="submit"
+            disabled={updatePost.isPending}
+            className="flex-1 md:flex-none"
+          >
+            {updatePost.isPending ? 'Saving...' : 'Save Changes'}
+          </Button>
           <Button
             type="button"
             variant="outline"
-            onClick={() => router.back()}
-            disabled={updateMutation.isPending}
+            onClick={() => router.push('/dashboard')}
+            disabled={updatePost.isPending}
           >
             Cancel
-          </Button>
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={(e) => handleSubmit(e, false)}
-            isLoading={updateMutation.isPending}
-            disabled={updateMutation.isPending}
-          >
-            Save as Draft
-          </Button>
-          <Button
-            type="submit"
-            onClick={(e) => handleSubmit(e, true)}
-            isLoading={updateMutation.isPending}
-            disabled={updateMutation.isPending}
-          >
-            {published ? 'Update & Keep Published' : 'Publish Post'}
           </Button>
         </div>
       </form>
